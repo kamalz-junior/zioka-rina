@@ -1,0 +1,534 @@
+<!doctype html>
+<html class="scroll-smooth overflow-x-hidden">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="./img/icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://kit.fontawesome.com/faf88445ba.js" crossorigin="anonymous"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Dancing+Script:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Parisienne&display=swap"
+        rel="stylesheet">
+    <link href="./output.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <script type="text/javascript" src="./js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="./js/freewall.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Undangan Rina & Zioka" />
+    <meta property="og:description"
+        content="Kepada Yth. Ibu/bapak/saudara/i, tanpa mengurangi rasa hormat, kami mengundang anda untuk hadir di acara pernikahan ini" />
+    <meta property="og:image" content="https://undangan-w-k.vercel.app/img/K.jpg" />
+    <title>Undangan Rina & Zioka</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-image: url('./img/bg.png');
+            background-repeat: repeat;
+            background-size: 200px 300px;
+        }
+
+        .container {
+            height: 100vh;
+        }
+
+        .carousel {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .carousel-inner {
+            display: flex;
+            position: relative;
+            width: 100%;
+            height: 200px;
+        }
+
+        @media only screen and (min-width: 640px) {
+            .carousel-inner {
+                display: flex;
+                position: relative;
+                width: 100%;
+                height: 400px;
+            }
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .free-wall {
+            margin: 15px;
+        }
+
+        .brick img {
+            margin: 0;
+            display: block;
+        }
+
+        .modal {
+            display: none;
+            /* Sembunyikan modal secara default */
+            position: fixed;
+            /* Membuat modal berada di posisi tetap */
+            z-index: 1;
+            /* Menetapkan z-index untuk memastikan modal muncul di atas konten */
+            padding-top: 50px;
+            /* Jarak dari atas */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Lebar modal */
+            height: 100%;
+            /* Tinggi modal */
+            overflow: auto;
+            /* Tambahkan scroll jika diperlukan */
+            background-color: rgba(0, 0, 0, 0.9);
+            /* Warna latar belakang dengan opasitas */
+        }
+
+        /* Gaya untuk gambar dalam modal */
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 100%;
+            /* Membuat gambar dalam modal tidak melebihi lebar layar */
+            max-height: 100%;
+            /* Membuat gambar dalam modal tidak melebihi tinggi layar */
+        }
+
+        /* Gaya untuk tombol close */
+        .close-image {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close-image:hover,
+        .close-image:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Gaya untuk modal teks */
+        .text-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+            /* Background putih dengan opasitas */
+        }
+
+        /* Gaya untuk teks dalam modal */
+        .modal-text {
+            margin: auto;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .content {
+            opacity: 0;
+            /* Set opacity ke 0 sebagai keadaan awal */
+            transition: opacity 3s ease;
+            /* Transisi efek fade-in */
+        }
+
+        .dot {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            background: url('./img/sprite.png');
+            background-size: 100% 100%;
+        }
+
+        .dot2 {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            background: url('./img/sprite.png');
+            background-size: 100% 100%;
+        }
+
+        .dot3 {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            background: url('./img/sprite.png');
+            background-size: 100% 100%;
+        }
+
+        #logo {
+            left: 50%;
+            top: 50%;
+            position: absolute;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="justify-center phone:block tablet:flex laptop:flex desktop:flex">
+        <div class="container w-full phone:w-full tablet:w-3/5 laptop:w-3/5 desktop:w-3/5">
+            <div class="flex justify-evenly bg-white fixed h-full w-full z-10 phone:w-full tablet:w-3/5 laptop:w-3/5 desktop:w-3/5"
+                id="open-modal">
+                <div id="container" class="fixed w-1 h-full top-0 left-0"></div>
+                <div class="h-full">
+                    <img src="./img/flower2.png" alt=""
+                        class="w-48 -scale-x-100 mt-96 phone:mt-48 tablet:mt-56 laptop:mt-56">
+                </div>
+                <div class="font-montserrat mt-40 tablet:mt-20">
+                    <div class="font-bold tracking-widest text-center">
+                        <center>
+                            <img src="./img/logo(1).png" alt="" class="w-64 rounded-lg">
+                        </center>
+                        <p
+                            class="text-center font-garamond text-xs phone:text-xs tablet:text-2xl laptop:text-2xl desktop:text-2xl">
+                            MINGGU . 13 APRIL . 2025</p>
+                    </div>
+                    <br>
+                    <div class="flex justify-center">
+                        <div>
+                            <div
+                                class="font-garamond flex justify-center text-center text-xs phone:text-xs tablet:text-xl">
+                                <p>Kepada Yth. <span class="block">Bapak/Ibu/Saudara/i</span></p>
+                            </div>
+                            <p id="name" class="font-garamond text-center font-bold m-3 text-2xl"></p>
+                            <div class="flex justify-center">
+                                <button
+                                    class="open-button font-garamond p-2 tracking-wide border border-black rounded-md hover:bg-gray-400 duration-300 hover:cursor-pointer"
+                                    onclick="openButton('toggleButton')">
+                                    <p class="tablet:text-2xl">Open</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <img src="./img/flower2.png" alt="" class="w-48 -scale-x-100 rotate-180">
+                </div>
+            </div>
+
+            <div class="w-10/12 m-auto tablet:w-full tablet:m-0">
+                <div class="flex justify-evenly bg-white">
+                    <div class="relative mt-10">
+                        <img src="./img/index.png" alt=""
+                            class="m-auto w-64 phone:w-5/6 desktop:w-3/5 animate-slowspin">
+                        <div
+                            class="font-bold tracking-widest text-center mb-5 absolute top-10 left-12 phone:top-12 desktop:top-24 phone:left-12 desktop:left-64">
+                            <center>
+                                <img src="./img/logo(1).png" alt="" class="w-32 phone:w-32 desktop:w-52">
+                            </center>
+                            <p
+                                class="text-center font-garamond text-xs phone:text-xs tablet:text-xl laptop:text-xl desktop:text-xl">
+                                MINGGU . 13 APRIL . 2025</p>
+                            <br>
+                            <i class="fa-solid fa-caret-down text-2xl animate-bounce"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white" id="Open">
+                    <div class="bg-white content pb-10 pt-20" id="content1">
+                        <div class="flex justify-center">
+                            <img src="./img/garis.png" alt="" class="w-56 tablet:w-96">
+                        </div>
+                        <div class="p-5 tablet:p-10">
+                            <img src="./img/bismillah.png" class="w-2/3 m-auto pb-5 pt-10 tablet:w-1/3 tablet:pb-10"
+                                alt="">
+                            <p></p>
+                            <div>
+                                <img src="./img/image1(1).jpg" alt="">
+                            </div>
+                            <div class="flex justify-end m-5">
+                                <div>
+                                    <hr class="border-2 border-gray-400 w-28 mt-2">
+                                </div>
+                                <div class="ml-5">
+                                    <p class="font-parisienne text-2xl desktop:font-bold">Qs. Ar-Rum:21</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-left">
+                                    <i class="fa-solid fa-quote-left text-gray-400 text-3xl"></i>
+                                </div>
+                                <div class="text-center p-5 font-garamond">
+                                    <p class="text-base tablet:text-xl">Dan di antara tanda-tanda kekuasaan-Nya ialah
+                                        Dia menciptakan untukmu istri-istri dari jenismu sendiri, supaya kamu cenderung
+                                        dan merasa tenteram kepadanya, dan dijadikan-Nya diantaramu rasa kasih dan
+                                        sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda
+                                        bagi kaum yang berpikir</p>
+                                </div>
+                                <div class="text-right">
+                                    <i class="fa-solid fa-quote-right text-gray-400 text-3xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white content" id="content2">
+                        <div class="flex justify-center">
+                            <img src="./img/garis.png" alt="" class="w-56 tablet:w-96">
+                        </div>
+                        <p class="font-parisienne font-bold text-4xl text-center m-5 mt-20 tablet:text-5xl">Bride &
+                            Groom</p>
+                        <div class="flex justify-center p-5 phone:p-5 tablet:p-14 laptop:p-14 desktop:p-14">
+                            <div class="w-1/2 font-garamond mr-2 phone:m-5 tablet:m-10 laptop:m-10 desktop:m-10">
+                                <div>
+                                    <p class="text-xl font-bold font-garamond block text-right tablet:text-5xl">Rina
+                                        Rahmayani</p>
+                                    <p class="text-wrap text-right text-sm pl-3 tablet:text-xl">Keluarga Alm. Bapak
+                                        Miskad dan
+                                        <span class="inline phone:inline laptop:block desktop:block">Ibu Rayanah</span>
+                                    </p>
+                                    <div class="flex justify-end">
+                                        <button class="rounded-full bg-slate-400 hover:bg-slate-600 duration-300">
+                                            <a href="https://www.instagram.com/nnarin29/"
+                                                class="text-2xl text-white "><i
+                                                    class="fa-brands fa-instagram m-3"></i></a>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-3/5 phone:mt-10 tablet:mt-0 laptop:mt-0 desktop:mt-0">
+                                <div class="carousel" id="carousel2">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-slide active">
+                                            <img src="./img/rina2.jpg" alt="Slide 1">
+                                        </div>
+                                        <div class="carousel-slide">
+                                            <img src="./img/rina3.jpg" alt="Slide 2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex mb-20 justify-center p-5 phone:p-5 tablet:p-14 laptop:p-14 desktop:p-14">
+                            <div class="w-3/5 mt-3 phone:mt-16 tablet:mt-0 laptop:mt-0 desktop:mt-0">
+                                <div class="carousel" id="carousel1">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-slide active">
+                                            <img src="./img/oka2.jpg" alt="Slide 1">
+                                        </div>
+                                        <div class="carousel-slide">
+                                            <img src="./img/oka3.jpg" alt="Slide 2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-1/2 font-garamond ml-2 tablet:m-10 laptop:m-10 desktop:m-10">
+                                <div>
+                                    <p class="text-lg font-bold font-garamond block tablet:text-5xl">Zioka Syawal
+                                        Abdillah</p>
+                                    <p class="text-wrap text-sm tablet:text-xl">Keluarga Bpk. Holid dan <span
+                                            class="inline phone:inline laptop:block desktop:block">Ibu Elisah</span>
+                                    </p>
+                                    <button class="rounded-full bg-slate-400 hover:bg-slate-600 duration-300 ">
+                                        <a href="https://www.instagram.com/zioka_sa17" class="text-2xl text-white "><i
+                                                class="fa-brands fa-instagram m-3"></i></a>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content" id="content3">
+                        <div class="flex justify-center">
+                            <img src="./img/garis.png" alt="" class="w-56 tablet:w-96">
+                        </div>
+                        <div class="p-7 pt-20">
+                            <p class="text-center font-parisienne font-bold text-4xl tablet:text-5xl">Hitung Mundur</p>
+                            <p class="text-center font-garamond text-lg tablet:text-4xl">Hari Bahagia</p>
+                        </div>
+                        <div class="text-center font-montserrat text-5xl tracking-wide text-gray-600 pb-20">
+                            <p id="countdown"></p>
+                        </div>
+                    </div>
+                    <div class="bg-white content pb-20" id="content8">
+                        <div class="flex justify-center pb-20">
+                            <img src="./img/garis.png" alt="" class="w-56 tablet:w-96">
+                        </div>
+                        <div class="m-5">
+                            <p class="font-parisienne font-bold text-4xl text-center tablet:text-5xl">Jadwal Acara<span
+                                    class="font-normal text-lg block font-garamond tablet:text-4xl">Minggu, 13 APRIL
+                                    2025</span></p>
+                        </div>
+                        <div class="flex justify-center grid-cols-2 tablet:text-2xl">
+                            <div class="font-garamond text-center m-5 border border-gray-400 rounded-md p-3">
+                                <p class="text-lg block font-bold">Akad</p>
+                                <p>Pukul</p>
+                                <p>08.00 - 10.00</p>
+                            </div>
+                            <div>
+                                <div class="font-garamond text-center m-5 border border-gray-400 rounded-md p-3">
+                                    <p class="text-lg block font-bold">Resepsi</p>
+                                    <p>Pukul</p>
+                                    <p>11.00 - 14.00</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="text-center font-garamond inline font-bold text-base phone:text-base tablet:text-xl laptop:text-xl desktop:text-xl">
+                            <p><i class="fa-solid fa-location-dot text-gray-400 mr-5"></i>Desa Mirat - Tarikolot</p>
+                        </div>
+                        <div class="flex justify-center mt-5">
+                            <button
+                                class="border border-black p-3 rounded-md font-garamond hover:bg-gray-300 duration-300 text-base tablet:text-xl"><i
+                                    class="fa-solid fa-map-location-dot"></i> <a
+                                    href="https://maps.app.goo.gl/BSvizhcZWbcxq9uN6">Open Maps</a></button>
+                        </div>
+                    </div>
+                    <div class="bg-white content" id="content4">
+                        <div class="flex justify-center p-7">
+                            <img src="./img/garis.png" alt="" class="w-56 tablet:w-96">
+                        </div>
+                    </div>
+                    <div class="bg-white content" id="content5">
+                        <div>
+                            <p class="text-center font-parisienne font-bold text-4xl tablet:text-5xl">Our Moments</p>
+                            <p class="text-center font-garamond text-lg tablet:text-4xl">Together</p>
+                        </div>
+                        <div class="p-5">
+                            <div id="freewall" class="free-wall"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white content" id="content6">
+                        <div class="flex justify-center">
+                            <img src="./img/garis.png" alt="" class="w-56 tablet:w-96">
+                        </div>
+                        <div class="text-center p-5">
+                            <p class=" font-parisienne font-bold text-4xl mt-5 tablet:text-5xl">Hadiah Digital</p>
+                            <br>
+                            <p class="font-garamond text-lg tablet:text-xl">Bagi saudara bapak/ibu/saudara/i yang ingin
+                                mengirimkan hadiah pernikahan dapat melalui rekening berikut</p>
+                        </div>
+                        <div class="flex justify-center">
+                            <button id="openModalBtn"
+                                class="border border-black rounded-md hover:bg-gray-400 duration-300 font-garamond p-3 text-sm tablet:text-xl"><i
+                                    class="fa-solid fa-gift"></i> Klik Disini!</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-black font-garamond text-white mt-10">
+                        <div class="p-5 content" id="content8">
+                            <p class="text-center text-lg m-5 mb-10 tablet:text-xl">Merupakan kebahagiaan dan kehormatan
+                                bagi kami bila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan do'a restu kepada kami
+                            </p>
+                            <p class="font-parisienne text-4xl text-center font-bold tablet:text-5xl">Terima Kasih</p>
+                            <p class="font-parisienne text-2xl text-center tablet:text-4xl">Rina & Zioka</p>
+                        </div>
+                        <br>
+                        <br>
+                        <p class="text-center tablet:text-2xl">© Copyright 2025</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="textModal" class="text-modal font-garamond">
+                <div class="modal-content">
+                    <div class="modal-text bg-white m-10 tablet:text-xl">
+                        <p>Silahkan transfer hadiah digital ke rekening berikut</p>
+                        <div class="block phone:block tablet:flex laptop:flex desktop:flex justify-center rounded-md">
+                            <div class="flex justify-center m-2">
+                                <div
+                                    class="p-10 text-black  m-5 phone:m-5 tablet:m-10 laptop:m-10 desktop:m-10 shadow-xl">
+                                    <div class="flex justify-center">
+                                        <img src="./img/BCA.png" alt="" class="w-36 m-5">
+                                    </div>
+                                    <p>a.n Zioka Syawal Abdillah<span class="block">2090772239</span></p>
+                                    <div>
+                                        <input type="text" id="input1" value="2090772239" class="hidden">
+                                        <button onclick="copyToClipboard('input1')"
+                                            class="border border-black rounded-md p-2 mt-4 hover:bg-gray-500 duration-300"><i
+                                                class="fa-regular fa-copy"></i> Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-center m-2">
+                                <div class="p-10 text-black m-10 shadow-xl">
+                                    <div class="flex justify-center">
+                                        <img src="./img/bri.png" alt="" class="w-36 m-5">
+                                    </div>
+                                    <p>a.n Rina Rahmayani<span class="block">089301028995539</span></p>
+                                    <div class="">
+                                        <input type="text" id="input2" value="089301028995539" class="hidden">
+                                        <button onclick="copyToClipboard('input2')"
+                                            class="border border-black rounded-md p-2 mt-4 hover:bg-gray-500 duration-300"><i
+                                                class="fa-regular fa-copy"></i> Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="m-5">Atas doa restu Bapak/Ibu/Saudara/i kami ucapkan terima kasih</p>
+                        <button class="border border-black p-2 rounded-md hover:bg-gray-500 duration-300"><span
+                                class="close-text text-black p-5 hover:cursor-pointer">Kembali</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="imageModal" class="modal">
+                <span class="close-image">&times;</span>
+                <img class="modal-content" id="modalImg">
+            </div>
+
+            <button id="toggleButton"
+                class="hidden bg-gray-400 text-white text-2xl fixed top-5 right-5 rounded-full w-14 h-14 animate-spin tablet:text-xl"><i
+                    class="fa-solid fa-compact-disc"></i></button>
+
+
+</body>
+<script>
+    var temp = "<div class='brick' style='width:{width}px;'><img src='./img/brick/{index}.jpeg' style:'width:100%'></div>";
+    var w = 1, h = 1, html = '', limitItem = 14;
+    for (var i = 0; i < limitItem; ++i) {
+        w = 1 + 3 * Math.random() << 0;
+        html += temp.replace(/\{width\}/g, w * 150).replace("{index}", i + 1);
+    }
+    $("#freewall").html(html);
+
+    var wall = new Freewall("#freewall");
+    wall.reset({
+        selector: '.brick',
+        animate: true,
+        cellW: 150,
+        cellH: 'auto',
+        onResize: function () {
+            wall.fitWidth();
+        }
+    });
+
+    var images = wall.container.find('.brick');
+    images.find('img').load(function () {
+        wall.fitWidth();
+    });
+</script>
+<script src="./js/script.js"></script>
+
+</html>
